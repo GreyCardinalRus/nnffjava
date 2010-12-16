@@ -62,7 +62,7 @@ package gc.nn.gng;
 // Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.                  ;
 //                                                                            ;
 // ========================================================================== ;
-
+// algorithm
 
 import java.applet.*;
 import java.awt.*;
