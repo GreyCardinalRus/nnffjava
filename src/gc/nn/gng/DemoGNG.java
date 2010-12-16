@@ -42,6 +42,7 @@ package gc.nn.gng;
 //            - name=distribution value="Move"           /                    ;
 //            - name=distribution value="Jump"          /                     ;
 //            - name=distribution value="Right MouseB" /                      ;
+//			  - name=distribution value="From File"   /                       ;
 //                                                                            ;
 // ========================================================================== ;
 //                                                                            ;
@@ -210,6 +211,8 @@ public class DemoGNG extends Applet {
    * The name of the 13th distribution.
    */
   protected final static String DISTRIB_12 = "Right MouseB";
+  
+  protected final static String DISTRIB_13 = "From file";
   /**
    * The name of the start button.
    */
@@ -666,6 +669,7 @@ public class DemoGNG extends Applet {
     distrib_choice.addItem(DISTRIB_10);
     distrib_choice.addItem(DISTRIB_11);
     distrib_choice.addItem(DISTRIB_12);
+    distrib_choice.addItem(DISTRIB_13);
     cp_distrib.add(new Label("prob. Distrib.:", Label.RIGHT));
     cp_distrib.add(distrib_choice);
     pDS.add(cp_distrib);
@@ -697,6 +701,10 @@ public class DemoGNG extends Applet {
 
     cp_speed.add(new Label("Speed:", Label.RIGHT));
     cp_speed.add(speed_choice);
+    // Valentin
+    speed_choice.select(2);
+    compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
+    //\Valentin 
     pDS.add(cp_speed);
     pSouth.add("Center", pDS);
 
