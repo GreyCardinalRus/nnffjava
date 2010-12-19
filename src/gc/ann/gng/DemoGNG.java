@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -42,7 +42,7 @@ package gc.nn.gng;
 //            - name=distribution value="Move"           /                    ;
 //            - name=distribution value="Jump"          /                     ;
 //            - name=distribution value="Right MouseB" /                      ;
-//			  - name=distribution value="From File"   /                       ;
+//			  - name=distribution value="From File gng.txt"   /                       ;
 //                                                                            ;
 // ========================================================================== ;
 //                                                                            ;
@@ -212,7 +212,7 @@ public class DemoGNG extends Applet {
    */
   protected final static String DISTRIB_12 = "Right MouseB";
   
-  protected final static String DISTRIB_13 = "From file";
+  protected final static String DISTRIB_13 = "From file gng.txt";
   /**
    * The name of the start button.
    */
@@ -590,7 +590,7 @@ public class DemoGNG extends Applet {
 
     // Create the GNG-Panel and center it
     compute = new ComputeGNG(this);
-    System.out.print("111");
+
     add("Center", compute);
 
     // Create a Panel for the Buttons
@@ -672,7 +672,7 @@ public class DemoGNG extends Applet {
     distrib_choice.addItem(DISTRIB_13);
     cp_distrib.add(new Label("prob. Distrib.:", Label.RIGHT));
     cp_distrib.add(distrib_choice);
-    pDS.add(cp_distrib);
+   pDS.add(cp_distrib);
 
     // Create a menu of node-numbers and add it to the Panel.
     nodes_choice = new Choice();
@@ -701,11 +701,7 @@ public class DemoGNG extends Applet {
 
     cp_speed.add(new Label("Speed:", Label.RIGHT));
     cp_speed.add(speed_choice);
-    // Valentin
-    speed_choice.select(2);
-    compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
-    //\Valentin 
-    pDS.add(cp_speed);
+     pDS.add(cp_speed);
     pSouth.add("Center", pDS);
 
     cards = new Panel();
@@ -1029,6 +1025,21 @@ public class DemoGNG extends Applet {
 	algo_choice.select(GNG_C);
 	algo_choice.show();
 	((CardLayout)cards.getLayout()).show(cards, ALGO_0);
+	   // Valentin
+
+    compute.distribution = 7;
+	distrib_choice.select(7);
+	distrib_choice.show();    //compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
+
+ speed_choice.select(2);
+    compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
+	  compute.utilityGNGB = true;
+	  utilityGNG_cb.setState(compute.utilityGNGB);
+		compute.addNode(new Dimension(compute.INIT_WIDTH, compute.INIT_HEIGHT));
+		if (compute.maxNodes != 1)
+		  compute.addNode(new Dimension(compute.INIT_WIDTH, compute.INIT_HEIGHT));
+	    //compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
+	    //\Valentin 
 
     // Get the parameter from the html-page
     String algorithm = getParameter("algorithm");

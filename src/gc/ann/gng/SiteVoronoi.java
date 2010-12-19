@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -34,39 +34,48 @@ package gc.nn.gng;
 // ========================================================================== ;
 
 /**
- * A class representing a Voronoi line. 
+ * A class representing a site in the Voronoi diagram
  *
  */
-public class LineGNG {
+public class SiteVoronoi {
   /**
-   * The first point (x) of the line
+   * The coordinate
    */
-  protected int x1 = -1;
+  public FPoint coord = null;
   /**
-   * The first point (y) of the line
+   * The number of the site
    */
-  protected int y1 = -1;
+  public int sitenbr = 0;
   /**
-   * The last point (x) of the line
+   * The reference counter of the site
    */
-  protected int x2 = -1;
-  /**
-   * The last point (y) of the line
-   */
-  protected int y2 = -1;
+  public int refcnt = 0;
 
   /**
-   * Constructor, allows setting the coordinates.
+   * The constructor of the SiteVoronoi class.
    * 
-   * @param x1        The first x coordinate
-   * @param y1        The first y coordinate
-   * @param x2        The second x coordinate
-   * @param y2        The second y coordinate
    */
-  public LineGNG (int x1, int y1, int x2, int y2) {
-    this.x1 = x1;
-    this.y1 = y1;
-    this.x2 = x2;
-    this.y2 = y2;
+  public SiteVoronoi() {
+    coord = new FPoint();
+    sitenbr = -1;
+    refcnt = 0;
   }
+  /**
+   * The constructor of the SiteVoronoi class.
+   * 
+   * @param p        The coordinates
+   * @param sitenbr  The identifier of the site
+   */
+  public SiteVoronoi(FPoint p, int sitenbr) {
+    coord = p;
+    this.sitenbr = sitenbr;
+    refcnt = 0;
+  }
+
+  public void print() {
+    System.out.println("Site: (Nr. " + sitenbr + "):" + 
+		       coord.x + ", " + coord.y +
+		       " (refcnt = " + refcnt + ")");
+  }
+
 }

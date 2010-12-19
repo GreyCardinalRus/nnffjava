@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -6,6 +6,13 @@ import java.awt.Event;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -1091,12 +1098,46 @@ class ComputeGNG extends Panel implements Runnable {
 		int dSY[] = discreteSignalsY;
 
 		if (distrib != 7) {
-			for (int i = 0; i < MAX_DISCRETE_SIGNALS; i++) {
+			if(distrib == 13)// FROM FILE
+			{
+		        BufferedReader in;
+//		        try {
+//		            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("gng.txt",true)));
+//		            out.write("hello");
+//		            out.newLine();
+//		            out.write("test");
+//		            out.close();
+//		        } catch (IOException e) {
+//		        }
+		        try {
+		            in = new BufferedReader(new InputStreamReader(new FileInputStream("gng.txt")));
+		            int pos=0;
+		            //System.out.println("h="+h+" w="+w);
+		            while (in.ready()&&pos<500) {
+		                String s = in.readLine();
+//		                System.out.println(s);	
+		                dSX[pos] = (int) (w/2+w/3*(new Double(s.substring(0, s.indexOf(";")))));
+		                dSY[pos] = (int) (h/2+h/3*(new Double(s.substring(s.indexOf(";")+1, s.indexOf(";",1+s.indexOf(";"))))));
+//		                System.out.println(s.substring(0, s.indexOf(";"))+" ="+dblX);	
+//		                System.out.println(s.substring(s.indexOf(";")+1, s.indexOf(";",1+s.indexOf(";")))+" ="+dblY);	
+		                pos++;
+		                //dSX[pos] = (int) (w/2*(1+1));
+		                //System.out.println(s);
+		            }
+		        in.close();
+		        } catch (IOException e) {
+		        }
+               
+	
+			}
+			else
+			{			for (int i = 0; i < MAX_DISCRETE_SIGNALS; i++) {
 				getSignal(distrib);
 				discreteSignalsX[i] = SignalX;
 				discreteSignalsY[i] = SignalY;
-			}
-		} else {
+			}}
+		} 
+		else {
 			if (w > h) {
 				kx = (int) (w / 4);
 				l = h;
@@ -2411,6 +2452,7 @@ class ComputeGNG extends Panel implements Runnable {
 			break;
 
 		case 7: // Discrete
+		case 13: // Discrete
 			z = (int) (MAX_DISCRETE_SIGNALS * Math.random());
 			SignalX = discreteSignalsX[z];
 			SignalY = discreteSignalsY[z];

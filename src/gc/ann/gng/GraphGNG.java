@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -33,49 +33,52 @@ package gc.nn.gng;
 //                                                                            ;
 // ========================================================================== ;
 
+
+
+import java.awt.*;
+
 /**
- * A class representing a site in the Voronoi diagram
+ * A class implementing the error graph.
  *
  */
-public class SiteVoronoi {
-  /**
-   * The coordinate
-   */
-  public FPoint coord = null;
-  /**
-   * The number of the site
-   */
-  public int sitenbr = 0;
-  /**
-   * The reference counter of the site
-   */
-  public int refcnt = 0;
+class GraphGNG extends Frame {
+  DemoGNG demo;
+  SelGraphics graph;
+  TextField error;
 
   /**
-   * The constructor of the SiteVoronoi class.
-   * 
+   * The name of the clear button.
    */
-  public SiteVoronoi() {
-    coord = new FPoint();
-    sitenbr = -1;
-    refcnt = 0;
-  }
+  protected final static String CLEAR = "Clear";
   /**
-   * The constructor of the SiteVoronoi class.
-   * 
-   * @param p        The coordinates
-   * @param sitenbr  The identifier of the site
+   * The name of the close button.
    */
-  public SiteVoronoi(FPoint p, int sitenbr) {
-    coord = p;
-    this.sitenbr = sitenbr;
-    refcnt = 0;
+  protected final static String CLOSE = "Close";
+
+  GraphGNG(DemoGNG demo) {
+	this.demo = demo;
+	graph = new SelGraphics();
+	setTitle("ErrorGraph");
+
+	setLayout(new BorderLayout());
+	add("North",new Label("  Error Graph"));
+	add("Center",graph);
+	Panel pSouth = new Panel();
+	pSouth.add(new Button(CLEAR));
+	pSouth.add(new Button(CLOSE));
+	add("South", pSouth);
+	pack();
   }
 
-  public void print() {
-    System.out.println("Site: (Nr. " + sitenbr + "):" + 
-		       coord.x + ", " + coord.y +
-		       " (refcnt = " + refcnt + ")");
+  public boolean handleEvent(Event evt) {
+	if (CLEAR.equals(evt.arg)) {
+	  graph.clear();
+	  return true;
+	} else if (CLOSE.equals(evt.arg)) {
+	  demo.graphClose();
+	  return true;
+	}
+	return super.handleEvent(evt);
   }
 
 }

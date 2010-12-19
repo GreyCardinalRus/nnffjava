@@ -1,4 +1,4 @@
-package gc.nn;
+package gc.ann;
 // Simple one-dimensional multi-layer perceptron
 // Contains no load or save facility (sorry!)
 import java.awt.*;

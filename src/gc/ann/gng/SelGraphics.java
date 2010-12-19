@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998) Hartmut S. Loos                                  ;

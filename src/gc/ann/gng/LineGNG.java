@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -34,72 +34,39 @@ package gc.nn.gng;
 // ========================================================================== ;
 
 /**
- * A class representing a float point in the plane.
+ * A class representing a Voronoi line. 
  *
  */
-public class FPoint {
+public class LineGNG {
   /**
-   * The x coordinate
+   * The first point (x) of the line
    */
-  public float x;
+  protected int x1 = -1;
   /**
-   * The y coordinate
+   * The first point (y) of the line
    */
-  public float y;
-
+  protected int y1 = -1;
   /**
-   * Constructor.
-   * 
+   * The last point (x) of the line
    */
-  public FPoint() {
-    this.x = -1.0f;
-    this.y = -1.0f;
-  }
+  protected int x2 = -1;
+  /**
+   * The last point (y) of the line
+   */
+  protected int y2 = -1;
 
   /**
    * Constructor, allows setting the coordinates.
    * 
-   * @param x        The x coordinate
-   * @param y        The y coordinate
+   * @param x1        The first x coordinate
+   * @param y1        The first y coordinate
+   * @param x2        The second x coordinate
+   * @param y2        The second y coordinate
    */
-  public FPoint(float x, float y) {
-    this.x = x;
-    this.y = y;
+  public LineGNG (int x1, int y1, int x2, int y2) {
+    this.x1 = x1;
+    this.y1 = y1;
+    this.x2 = x2;
+    this.y2 = y2;
   }
-
-  /**
-   * Set the member variables.
-   * 
-   * @param x        The x coordinate
-   * @param y        The y coordinate
-   */
-  public void set(float x, float y) {
-    this.x = x;
-    this.y = y;
-  }
-
-  /**
-   * Set the member variables.
-   * 
-   * @param p        The coordinates
-   */
-  public void set(FPoint p) {
-    x = p.x;
-    y = p.y;
-  }
-
-  /**
-   * Test the member variables.
-   * 
-   * @param x        The x coordinate
-   * @param y        The y coordinate
-   * @return	     Equal?
-   */
-  public boolean equal(float x, float y) {
-    if ( (this.x == x) && (this.y == y) )
-      return(true);
-    else
-      return(false);
-  }
-
 }

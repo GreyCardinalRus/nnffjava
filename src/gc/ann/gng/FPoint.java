@@ -1,4 +1,4 @@
-package gc.nn.gng;
+package gc.ann.gng;
 // ========================================================================== ;
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -33,52 +33,73 @@ package gc.nn.gng;
 //                                                                            ;
 // ========================================================================== ;
 
-
-
-import java.awt.*;
-
 /**
- * A class implementing the error graph.
+ * A class representing a float point in the plane.
  *
  */
-class GraphGNG extends Frame {
-  DemoGNG demo;
-  SelGraphics graph;
-  TextField error;
+public class FPoint {
+  /**
+   * The x coordinate
+   */
+  public float x;
+  /**
+   * The y coordinate
+   */
+  public float y;
 
   /**
-   * The name of the clear button.
+   * Constructor.
+   * 
    */
-  protected final static String CLEAR = "Clear";
-  /**
-   * The name of the close button.
-   */
-  protected final static String CLOSE = "Close";
-
-  GraphGNG(DemoGNG demo) {
-	this.demo = demo;
-	graph = new SelGraphics();
-	setTitle("ErrorGraph");
-
-	setLayout(new BorderLayout());
-	add("North",new Label("  Error Graph"));
-	add("Center",graph);
-	Panel pSouth = new Panel();
-	pSouth.add(new Button(CLEAR));
-	pSouth.add(new Button(CLOSE));
-	add("South", pSouth);
-	pack();
+  public FPoint() {
+    this.x = -1.0f;
+    this.y = -1.0f;
   }
 
-  public boolean handleEvent(Event evt) {
-	if (CLEAR.equals(evt.arg)) {
-	  graph.clear();
-	  return true;
-	} else if (CLOSE.equals(evt.arg)) {
-	  demo.graphClose();
-	  return true;
-	}
-	return super.handleEvent(evt);
+  /**
+   * Constructor, allows setting the coordinates.
+   * 
+   * @param x        The x coordinate
+   * @param y        The y coordinate
+   */
+  public FPoint(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  /**
+   * Set the member variables.
+   * 
+   * @param x        The x coordinate
+   * @param y        The y coordinate
+   */
+  public void set(float x, float y) {
+    this.x = x;
+    this.y = y;
+  }
+
+  /**
+   * Set the member variables.
+   * 
+   * @param p        The coordinates
+   */
+  public void set(FPoint p) {
+    x = p.x;
+    y = p.y;
+  }
+
+  /**
+   * Test the member variables.
+   * 
+   * @param x        The x coordinate
+   * @param y        The y coordinate
+   * @return	     Equal?
+   */
+  public boolean equal(float x, float y) {
+    if ( (this.x == x) && (this.y == y) )
+      return(true);
+    else
+      return(false);
   }
 
 }
