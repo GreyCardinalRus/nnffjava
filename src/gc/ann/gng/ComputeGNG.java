@@ -7,12 +7,9 @@ import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
 
 //                                                                            ;
 //     Copyright (1996-1998)  Hartmut S. Loos                                 ;
@@ -490,6 +487,11 @@ class ComputeGNG extends Panel implements Runnable {
 	 * The string shown in the fine-tuning phase of the method GG.
 	 */
 	protected String fineTuningS = "";
+	/**
+	 * The value epsilon for the HCL algorithm. This variable can be set by the
+	 * user.
+	 */
+	protected float norm_error = 0.01f;
 
 	/**
 	 * The constructor.
@@ -1088,7 +1090,7 @@ class ComputeGNG extends Panel implements Runnable {
 	 *            The height of the drawing area
 	 */
 	protected void initDiscreteSignals(int distrib) {
-		Dimension d = size();
+		Dimension d = getSize();
 		int w = d.width;
 		int h = d.height;
 		int kx = 1;
@@ -2597,7 +2599,7 @@ class ComputeGNG extends Panel implements Runnable {
 		while (true) {
 
 			// Relativate Positions
-			Dimension d = size();
+			Dimension d = getSize();
 			if ((d.width != INIT_WIDTH) || (d.height != INIT_HEIGHT)) {
 				NodeGNG n;
 				for (i = 0; i < nnodes; i++) {
@@ -2664,7 +2666,7 @@ class ComputeGNG extends Panel implements Runnable {
 	 * 
 	 */
 	protected synchronized void learn() {
-		Dimension d = size();
+		Dimension d = getSize();
 		int nr1, nr2;
 		int i, j, k, l, m;
 		int x, y;
@@ -3105,7 +3107,7 @@ class ComputeGNG extends Panel implements Runnable {
 				readyLBG_B = true;
 				int sumSignal, sig;
 				int wa = 0, wb = 0;
-				int pickNo = 0, pick2No = 0;
+				int pickNo = 0;//, pick2No = 0;
 				NodeGNG pickLBG, pick2LBG;
 				float bestDistLBG, nextBestDistLBG;
 				float utility = 0.0f;
@@ -3134,7 +3136,7 @@ class ComputeGNG extends Panel implements Runnable {
 						// Calculate node with best distance and prepare for
 						// second
 						if (n.dist < bestDistLBG) {
-							pick2No = pickNo;
+							//pick2No = pickNo;
 							pick2LBG = pickLBG;
 							pickNo = i;
 							pickLBG = n;
@@ -3158,7 +3160,7 @@ class ComputeGNG extends Panel implements Runnable {
 						n = nodes[i];
 
 						if (n.dist < nextBestDistLBG) {
-							pick2No = i;
+							//pick2No = i;
 							pick2LBG = n;
 							nextBestDistLBG = n.dist;
 						}
@@ -3279,7 +3281,7 @@ class ComputeGNG extends Panel implements Runnable {
 	 * 
 	 */
 	public boolean computeVoronoi() {
-		Dimension d = size();
+		Dimension d = getSize();
 		int i;
 		xmin = 0;
 		ymin = 0;
@@ -3413,8 +3415,8 @@ class ComputeGNG extends Panel implements Runnable {
 	public void out_ep(EdgeVoronoi e) {
 		SiteVoronoi s1, s2;
 		float x1, x2, y1, y2;
-		float dx, dy, d;
-		Dimension dim = size();
+		//float dx, dy, d;
+		Dimension dim = getSize();
 
 		pxmin = 0.0f;
 		pymin = 0.0f;
@@ -3503,7 +3505,7 @@ class ComputeGNG extends Panel implements Runnable {
 	}
 
 	public void PQinsert(HalfEdgeVoronoi he, SiteVoronoi v, float offset) {
-		HalfEdgeVoronoi last, next;
+		//HalfEdgeVoronoi last, next;
 
 		he.vertex = v;
 		v.refcnt++;
@@ -3514,7 +3516,7 @@ class ComputeGNG extends Panel implements Runnable {
 	}
 
 	public void PQdelete(HalfEdgeVoronoi he) {
-		HalfEdgeVoronoi last;
+		//HalfEdgeVoronoi last;
 
 		if (he.vertex != null) {
 			pq.PQdelete(he);
@@ -3859,7 +3861,7 @@ class ComputeGNG extends Panel implements Runnable {
 	 *            The graphic context
 	 */
 	public synchronized void update(Graphics g) {
-		Dimension d = size();
+		Dimension d = getSize();
 		int r1 = (int) d.width / 4;
 		int l1 = (int) d.height / 4;
 		int r2 = (int) d.width / 2;
@@ -4151,7 +4153,7 @@ class ComputeGNG extends Panel implements Runnable {
 			break;
 
 		case 7: // discrete
-			int RADIUS = 2;
+			//int RADIUS = 2;
 			for (i = 0; i < numDiscreteSignals; i++) {
 				x = (int) (discreteSignalsX[i]);
 				y = (int) (discreteSignalsY[i]);
@@ -4417,10 +4419,11 @@ class ComputeGNG extends Panel implements Runnable {
 
 		// Show error graph or not
 		if (errorGraph != null) {
-			if (errorGraphB)
-				errorGraph.show();
-			else
-				errorGraph.hide();
+			errorGraph.setVisible(errorGraphB);
+			//if (errorGraphB)
+			//	errorGraph.show();
+			//else
+			//	errorGraph.hide();
 		}
 
 		g.drawImage(offscreen, 0, 0, null);
@@ -4428,7 +4431,7 @@ class ComputeGNG extends Panel implements Runnable {
 
 	public synchronized boolean mouseDown(Event evt, int x, int y) {
 		if (evt.metaDown() && (distribution == 12)) {
-			Dimension d = size();
+			Dimension d = getSize();
 			// System.out.println("RIGHT Mousebutton pressed!");
 
 			jumpX = x;
@@ -4473,7 +4476,7 @@ class ComputeGNG extends Panel implements Runnable {
 	}
 
 	public synchronized boolean mouseDrag(Event evt, int x, int y) {
-		Dimension d = size();
+		Dimension d = getSize();
 
 		if (evt.metaDown() && (distribution == 12)) {
 			// System.out.println("RIGHT Mousebutton dragged!");
@@ -4515,7 +4518,7 @@ class ComputeGNG extends Panel implements Runnable {
 	}
 
 	public synchronized boolean mouseUp(Event evt, int x, int y) {
-		Dimension d = size();
+		Dimension d = getSize();
 
 		if (evt.metaDown() && (distribution == 12)) {
 			// System.out.println("RIGHT Mousebutton released!");
@@ -4564,13 +4567,13 @@ class ComputeGNG extends Panel implements Runnable {
 		relaxer.start();
 
 		if (errorGraphB && (errorGraph != null))
-			errorGraph.show();
+			errorGraph.setVisible(true);
 	}
 
 	public void stop() {
 		relaxer.stop();
 		if (errorGraphB && (errorGraph != null))
-			errorGraph.hide();
+			errorGraph.setVisible(false);
 	}
 
 	public void destroy() {

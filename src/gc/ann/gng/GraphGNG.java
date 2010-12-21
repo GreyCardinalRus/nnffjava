@@ -42,7 +42,11 @@ import java.awt.*;
  *
  */
 class GraphGNG extends Frame {
-  DemoGNG demo;
+  /**
+	 * 
+	 */
+	private static final long serialVersionUID = 5291220232899298910L;
+DemoGNG demo;
   SelGraphics graph;
   TextField error;
 

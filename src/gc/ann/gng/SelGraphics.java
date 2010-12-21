@@ -110,7 +110,7 @@ public class SelGraphics extends Canvas {
     
     // get bounds
     da = this.getGraphics();
-    size = this.bounds();
+    size = this.getBounds();
     Diagram = new Rectangle(40, 5, size.width - 45, size.height - 25);
 
     da.setColor(Color.gray);

@@ -290,11 +290,14 @@ public class DemoGNG extends Applet {
   Label epsilonfHCL_lbl;
   Label tmaxHCL_lbl;
   Label nodes_lbl;
+  Label norm_err_lbl;
+  Checkbox norm_err_cb;
   Checkbox noNodes_cb;
   Checkbox utilityGNG_cb;
   Checkbox LBG_U_cb;
   Checkbox variable_cb;
   Checkbox errorGraph_cb;
+  Choice norm_err_choice;
   Choice algo_choice;
   Choice distrib_choice;
   Choice stepSize_choice;
@@ -579,6 +582,8 @@ public class DemoGNG extends Applet {
 								   "2x30", "3x30", "4x30",
 								   "10x15", "15x10", "10x20", "20x10",
 								   "15x15", "13x19", "19x13"};
+  protected float norm_err_Af[] = {0.1f, 0.05f, 0.2f, 0.3f, 0.4f, 0.5f,
+		  0.6f, 0.7f, 0.8f, 0.9f, 1.0f};
 
   public void init() {
 	int i;
@@ -629,8 +634,8 @@ public class DemoGNG extends Applet {
     start_b = new Button(BUTTON_0);
     stop_b = new Button(BUTTON_1);
     restart_b = new Button(BUTTON_3);
-    start_b.disable();
-    restart_b.disable();
+    start_b.setEnabled(false);
+    restart_b.setEnabled(false);
 
     pAllN.add(start_b);
     pAllN.add(stop_b);
@@ -682,6 +687,15 @@ public class DemoGNG extends Applet {
     nodes_lbl = new Label("max. Nodes:", Label.RIGHT);
     cp_nodes.add(nodes_lbl);
     cp_nodes.add(nodes_choice);
+    pDS.add(cp_nodes);
+    // Create a menu of node-numbers and add it to the Panel.
+    norm_err_choice = new Choice();
+    for (i = 0; i < norm_err_Af.length; i++)
+    	norm_err_choice.addItem(String.valueOf(norm_err_Af[i]));
+
+    norm_err_lbl = new Label("norm. Err:", Label.RIGHT);
+    cp_nodes.add(norm_err_lbl);
+    cp_nodes.add(norm_err_choice);
     pDS.add(cp_nodes);
 
     // Create a menu of step sizes and add it to the Panel.
@@ -798,13 +812,13 @@ public class DemoGNG extends Applet {
     p2.add(tmaxHCL_choice);
 
     if (!compute.variableB) {
-	  epsiloniHCL_lbl.disable();
-	  epsilonfHCL_lbl.disable();
-	  tmaxHCL_lbl.disable();
+	  epsiloniHCL_lbl.setEnabled(false);
+	  epsilonfHCL_lbl.setEnabled(false);
+	  tmaxHCL_lbl.setEnabled(false);
 
-	  epsiloniHCL_choice.disable();
-	  epsilonfHCL_choice.disable();
-	  tmaxHCL_choice.disable();
+	  epsiloniHCL_choice.setEnabled(false);
+	  epsilonfHCL_choice.setEnabled(false);
+	  tmaxHCL_choice.setEnabled(false);
     }
 
     Panel p3 = new Panel();
@@ -1023,13 +1037,13 @@ public class DemoGNG extends Applet {
 	// Default algorithm is GNG
 	compute.algo = 0;
 	algo_choice.select(GNG_C);
-	algo_choice.show();
+	algo_choice.setVisible(true);
 	((CardLayout)cards.getLayout()).show(cards, ALGO_0);
 	   // Valentin
 
     compute.distribution = 7;
 	distrib_choice.select(7);
-	distrib_choice.show();    //compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
+	distrib_choice.setVisible(true);    //compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
 
  speed_choice.select(2);
     compute.speed = speed_Ai[speed_choice.getSelectedIndex()];
@@ -1049,55 +1063,55 @@ public class DemoGNG extends Applet {
       if (distrib.equals(DISTRIB_1)) {
 		compute.distribution = 1;
 		distrib_choice.select(1);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_2)) {
 		compute.distribution = 2;
 		distrib_choice.select(2);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_3)) {
 		compute.distribution = 3;
 		distrib_choice.select(3);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_4)) {
 		compute.distribution = 4;
 		distrib_choice.select(4);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_5)) {
 		compute.distribution = 5;
 		distrib_choice.select(5);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_6)) {
 		compute.distribution = 6;
 		distrib_choice.select(6);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_7)) {
 		compute.distribution = 7;
 		distrib_choice.select(7);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_8)) {
 		compute.distribution = 8;
 		distrib_choice.select(8);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_9)) {
 		compute.distribution = 9;
 		distrib_choice.select(9);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_10)) {
 		compute.distribution = 10;
 		distrib_choice.select(10);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_11)) {
 		compute.distribution = 11;
 		distrib_choice.select(11);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else if (distrib.equals(DISTRIB_12)) {
 		compute.distribution = 12;
 		distrib_choice.select(12);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       } else {
 		compute.distribution = 0;
 		distrib_choice.select(0);
-		distrib_choice.show();
+		distrib_choice.setVisible(true);
       }
     }
 
@@ -1106,7 +1120,7 @@ public class DemoGNG extends Applet {
       if (algorithm.equals(ALGO_ABBREV_1)) {
 		compute.algo = 1;
 		algo_choice.select(HCL_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_1);
 		compute.epsilon = epsilonHCL_Af[0];
 		nodes_lbl.setText("     Nodes:");
@@ -1122,11 +1136,11 @@ public class DemoGNG extends Applet {
       else if (algorithm.equals(ALGO_ABBREV_2)) {
 		compute.algo = 2;
 		algo_choice.select(NG_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_2);
 		compute.stepSize = stepSize_Ai[3];
 		stepSize_choice.select(3);
-		stepSize_choice.show();
+		stepSize_choice.setVisible(true);
 		nodes_lbl.setText("     Nodes:");
 		compute.l_i = lambdaiNG_Af[0];
 		compute.l_f = lambdafNG_Af[0];
@@ -1142,10 +1156,10 @@ public class DemoGNG extends Applet {
       else if (algorithm.equals(ALGO_ABBREV_3)) {
 		compute.algo = 3;
 		algo_choice.select(NGwCHL_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		compute.stepSize = stepSize_Ai[3];
 		stepSize_choice.select(3);
-		stepSize_choice.show();
+		stepSize_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_3);
 		nodes_lbl.setText("     Nodes:");
 		compute.l_i = lambdaiCHL_Af[0];
@@ -1164,10 +1178,10 @@ public class DemoGNG extends Applet {
       else if (algorithm.equals(ALGO_ABBREV_4)) {
 		compute.algo = 4;
 		algo_choice.select(CHL_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		compute.stepSize = stepSize_Ai[0];
 		stepSize_choice.select(0);
-		stepSize_choice.show();
+		stepSize_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_4);
 		nodes_lbl.setText("     Nodes:");
 
@@ -1184,16 +1198,16 @@ public class DemoGNG extends Applet {
 		}
 		compute.algo = 5;
 		algo_choice.select(LBG_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		compute.stepSize = stepSize_Ai[1];
 		stepSize_choice.select(1);
-		stepSize_choice.show();
+		stepSize_choice.setVisible(true);
 		compute.maxNodes = nodes_Ai[5];
 		nodes_choice.select(5);
-		nodes_choice.show();
+		nodes_choice.setVisible(true);
 		compute.numDiscreteSignals = discreteNumSignalsLBG_Ai[0];
 		discreteNumSignalsLBG_choice.select(0);
-		discreteNumSignalsLBG_choice.show();
+		discreteNumSignalsLBG_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_5);
 		nodes_lbl.setText("     Nodes:");
 		compute.errorBestLBG_U = Float.MAX_VALUE;		  
@@ -1202,7 +1216,7 @@ public class DemoGNG extends Applet {
       else if (algorithm.equals(ALGO_ABBREV_6)) {
 		compute.algo = 6;
 		algo_choice.select(GG_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_6);
 		compute.stepSize = stepSize_Ai[0];
 		compute.l_i = lambdagGG_Af[0];
@@ -1219,7 +1233,7 @@ public class DemoGNG extends Applet {
       else if (algorithm.equals(ALGO_ABBREV_7)) {
 		compute.algo = 7;
 		algo_choice.select(SOM_C);
-		algo_choice.show();
+		algo_choice.setVisible(true);
 		((CardLayout)cards.getLayout()).show(cards, ALGO_7);
 		compute.stepSize = stepSize_Ai[0];
 		compute.e_i = epsiloniSOM_Af[0];
@@ -1227,8 +1241,8 @@ public class DemoGNG extends Applet {
 		compute.sigma_i = sigmaiSOM_Af[0];
 		compute.sigma_f = sigmafSOM_Af[0];
 		compute.t_max = tmaxSOM_Af[0];
-		nodes_lbl.disable();
-		nodes_choice.disable();
+		nodes_lbl.setEnabled(false);
+		nodes_choice.setEnabled(false);
 
 		// Gernerate some nodes
 		compute.initGrid(sizeSOM_Ai[0][0], sizeSOM_Ai[0][1],
@@ -1270,7 +1284,7 @@ public class DemoGNG extends Applet {
 
   public boolean action(Event evt, Object arg) {
 	int i;
-    Dimension d = compute.size();
+    Dimension d = compute.getSize();
 
     // A Checkbox event?
     if (arg instanceof Boolean) {
@@ -1309,27 +1323,27 @@ public class DemoGNG extends Applet {
       } else if (cb.equals(VARIABLE)) {
 		compute.variableB = ((Boolean)arg).booleanValue();
 		if (compute.variableB) {
-		  epsilonHCL_lbl.disable();
-		  epsilonHCL_choice.disable();
+		  epsilonHCL_lbl.setEnabled(false);
+		  epsilonHCL_choice.setEnabled(false);
 
-		  epsiloniHCL_lbl.enable();
-		  epsilonfHCL_lbl.enable();
-		  tmaxHCL_lbl.enable();
+		  epsiloniHCL_lbl.setEnabled(true);
+		  epsilonfHCL_lbl.setEnabled(true);
+		  tmaxHCL_lbl.setEnabled(true);
 		  
-		  epsiloniHCL_choice.enable();
-		  epsilonfHCL_choice.enable();
-		  tmaxHCL_choice.enable();
+		  epsiloniHCL_choice.setEnabled(true);
+		  epsilonfHCL_choice.setEnabled(true);
+		  tmaxHCL_choice.setEnabled(true);
 		} else {
-		  epsilonHCL_lbl.enable();
-		  epsilonHCL_choice.enable();
+		  epsilonHCL_lbl.setEnabled(true);
+		  epsilonHCL_choice.setEnabled(true);
 
-		  epsiloniHCL_lbl.disable();
-		  epsilonfHCL_lbl.disable();
-		  tmaxHCL_lbl.disable();
+		  epsiloniHCL_lbl.setEnabled(false);
+		  epsilonfHCL_lbl.setEnabled(false);
+		  tmaxHCL_lbl.setEnabled(false);
 		  
-		  epsiloniHCL_choice.disable();
-		  epsilonfHCL_choice.disable();
-		  tmaxHCL_choice.disable();
+		  epsiloniHCL_choice.setEnabled(false);
+		  epsilonfHCL_choice.setEnabled(false);
+		  tmaxHCL_choice.setEnabled(false);
 		}
       }
       return true;
@@ -1340,17 +1354,17 @@ public class DemoGNG extends Applet {
 
       // Start
       if (BUTTON_0.equals(arg)) {
-		start_b.disable();
-		stop_b.enable();
-		restart_b.disable();
+		start_b.setEnabled(false);
+		stop_b.setEnabled(true);
+		restart_b.setEnabled(false);
 		compute.stopB = false;
 		compute.readyLBG_B = false;
       }
       // Stop
       else if (BUTTON_1.equals(arg)) {
-		start_b.enable();
-		stop_b.disable();
-		restart_b.enable();
+		start_b.setEnabled(true);
+		stop_b.setEnabled(false);
+		restart_b.setEnabled(true);
 		compute.stopB = true;
       }
       // Reset
@@ -1387,7 +1401,7 @@ public class DemoGNG extends Applet {
 		  if (compute.maxNodes < 4) {
 			compute.maxNodes = nodes_Ai[0];
 			nodes_choice.select(0);
-			nodes_choice.show();
+			nodes_choice.setVisible(true);
 		  }
 
 		  // Gernerate some nodes
@@ -1423,8 +1437,8 @@ public class DemoGNG extends Applet {
 		compute.noNodesB = noNodes_cb.getState();
 		compute.utilityGNGB = utilityGNG_cb.getState();
 		compute.nodesMovedB = true;
-		nodes_lbl.enable();
-		nodes_choice.enable();
+		nodes_lbl.setEnabled(true);
+		nodes_choice.setEnabled(true);
 
         ((CardLayout)cards.getLayout()).show(cards,(String)arg);
 
@@ -1439,26 +1453,26 @@ public class DemoGNG extends Applet {
 		  nodes_lbl.setText("max. Nodes:");
           compute.epsilonGNG = epsilonGNG1_Af[0];
 		  epsilonGNG1_choice.select(0);
-		  epsilonGNG1_choice.show();
+		  epsilonGNG1_choice.setVisible(true);
           compute.epsilonGNG2 = epsilonGNG2_Af[0];
 		  epsilonGNG2_choice.select(0);
-		  epsilonGNG2_choice.show();
+		  epsilonGNG2_choice.setVisible(true);
           compute.alphaGNG = alphaGNG_Af[0];
 		  alphaGNG_choice.select(0);
-		  alphaGNG_choice.show();
+		  alphaGNG_choice.setVisible(true);
           compute.forgetFactor = 1.0f - betaGNG_Af[0];
           compute.forgetFactorUtility = 1.0f - betaGNG_Af[0];
 		  betaGNG_choice.select(0);
-		  betaGNG_choice.show();
+		  betaGNG_choice.setVisible(true);
           compute.utilityGNG = utilityGNG_Af[0];
 		  utilityGNG_choice.select(0);
-		  utilityGNG_choice.show();
+		  utilityGNG_choice.setVisible(true);
           compute.MAX_EDGE_AGE = delEdgeGNG_Ai[0];
 		  delEdgeGNG_choice.select(0);
-		  delEdgeGNG_choice.show();
+		  delEdgeGNG_choice.setVisible(true);
           compute.NUM_NEW_NODE = newNodeGNG_Ai[0];
 		  newNodeGNG_choice.select(0);
-		  newNodeGNG_choice.show();
+		  newNodeGNG_choice.setVisible(true);
 		} else if (arg.equals(ALGO_1)) {
 		  compute.algo = 1;
 
@@ -1466,16 +1480,16 @@ public class DemoGNG extends Applet {
 		  nodes_lbl.setText("Nodes:");
           compute.epsilon = epsilonHCL_Af[0];
 		  epsilonHCL_choice.select(0);
-		  epsilonHCL_choice.show();
+		  epsilonHCL_choice.setVisible(true);
 		  compute.e_i = epsiloniHCL_Af[0];
 		  epsiloniHCL_choice.select(0);
-		  epsiloniHCL_choice.show();
+		  epsiloniHCL_choice.setVisible(true);
 		  compute.e_f = epsilonfHCL_Af[0];
 		  epsilonfHCL_choice.select(0);
-		  epsilonfHCL_choice.show();
+		  epsilonfHCL_choice.setVisible(true);
 		  compute.t_max = tmaxHCL_Af[0];
 		  tmaxHCL_choice.select(0);
-		  tmaxHCL_choice.show();
+		  tmaxHCL_choice.setVisible(true);
 
           // Gernerate some nodes
           for (i = 0; i < compute.maxNodes; i++)
@@ -1487,19 +1501,19 @@ public class DemoGNG extends Applet {
 		  nodes_lbl.setText("Nodes:");
           compute.l_i = lambdaiNG_Af[0];
 		  lambdaiNG_choice.select(0);
-		  lambdaiNG_choice.show();
+		  lambdaiNG_choice.setVisible(true);
           compute.l_f = lambdafNG_Af[0];
 		  lambdafNG_choice.select(0);
-		  lambdafNG_choice.show();
+		  lambdafNG_choice.setVisible(true);
           compute.e_i = epsiloniNG_Af[0];
 		  epsiloniNG_choice.select(0);
-		  epsiloniNG_choice.show();
+		  epsiloniNG_choice.setVisible(true);
           compute.e_f = epsilonfNG_Af[0];
 		  epsilonfNG_choice.select(0);
-		  epsilonfNG_choice.show();
+		  epsilonfNG_choice.setVisible(true);
           compute.t_max = tmaxNG_Af[0];
 		  tmaxNG_choice.select(0);
-		  tmaxNG_choice.show();
+		  tmaxNG_choice.setVisible(true);
 
           // Gernerate some nodes
           for (i = 0; i < compute.maxNodes; i++)
@@ -1511,25 +1525,25 @@ public class DemoGNG extends Applet {
 		  nodes_lbl.setText("Nodes:");
           compute.l_i = lambdaiCHL_Af[0];
 		  lambdaiCHL_choice.select(0);
-		  lambdaiCHL_choice.show();
+		  lambdaiCHL_choice.setVisible(true);
           compute.l_f = lambdafCHL_Af[0];
 		  lambdafCHL_choice.select(0);
-		  lambdafCHL_choice.show();
+		  lambdafCHL_choice.setVisible(true);
           compute.e_i = epsiloniCHL_Af[0];
 		  epsiloniCHL_choice.select(0);
-		  epsiloniCHL_choice.show();
+		  epsiloniCHL_choice.setVisible(true);
           compute.e_f = epsilonfCHL_Af[0];
 		  epsilonfCHL_choice.select(0);
-		  epsilonfCHL_choice.show();
+		  epsilonfCHL_choice.setVisible(true);
           compute.t_max = tmaxCHL_Af[0];
 		  tmaxCHL_choice.select(0);
-		  tmaxCHL_choice.show();
+		  tmaxCHL_choice.setVisible(true);
           compute.delEdge_i = edgeiCHL_Ai[0];
 		  edgeiCHL_choice.select(0);
-		  edgeiCHL_choice.show();
+		  edgeiCHL_choice.setVisible(true);
           compute.delEdge_f = edgefCHL_Ai[0];
 		  edgefCHL_choice.select(0);
-		  edgefCHL_choice.show();
+		  edgefCHL_choice.setVisible(true);
 
           // Gernerate some nodes
           for (i = 0; i < compute.maxNodes; i++)
@@ -1549,13 +1563,13 @@ public class DemoGNG extends Applet {
 		  // Set default values
 		  compute.stepSize = stepSize_Ai[1];
 		  stepSize_choice.select(1);
-		  stepSize_choice.show();
+		  stepSize_choice.setVisible(true);
 		  compute.maxNodes = nodes_Ai[5];
 		  nodes_choice.select(5);
-		  nodes_choice.show();
+		  nodes_choice.setVisible(true);
 		  compute.numDiscreteSignals = discreteNumSignalsLBG_Ai[0];
 		  discreteNumSignalsLBG_choice.select(0);
-		  discreteNumSignalsLBG_choice.show();
+		  discreteNumSignalsLBG_choice.setVisible(true);
 		  compute.readyLBG_B = false;
 		  compute.LBG_U_B = LBG_U_cb.getState();
 		  nodes_lbl.setText("Nodes:");
@@ -1577,46 +1591,46 @@ public class DemoGNG extends Applet {
 		  compute.initGrid(2, 2, d);
 		  compute.maxNodes = nodes_Ai[0];
 		  nodes_choice.select(0);
-		  nodes_choice.show();
+		  nodes_choice.setVisible(true);
 		  nodes_lbl.setText("max. Nodes:");
           compute.l_i = lambdagGG_Af[0];
 		  lambdagGG_choice.select(0);
-		  lambdagGG_choice.show();
+		  lambdagGG_choice.setVisible(true);
           compute.l_f = lambdafGG_Af[0];
 		  lambdafGG_choice.select(0);
-		  lambdafGG_choice.show();
+		  lambdafGG_choice.setVisible(true);
           compute.e_i = epsiloniGG_Af[0];
 		  epsiloniGG_choice.select(0);
-		  epsiloniGG_choice.show();
+		  epsiloniGG_choice.setVisible(true);
           compute.e_f = epsilonfGG_Af[0];
 		  epsilonfGG_choice.select(0);
-		  epsilonfGG_choice.show();
+		  epsilonfGG_choice.setVisible(true);
           compute.sigma = sigmaGG_Af[0];
 		  sigmaGG_choice.select(0);
-		  sigmaGG_choice.show();
+		  sigmaGG_choice.setVisible(true);
 		} else if (arg.equals(ALGO_7)) {
 		  compute.algo = 7;
 
 		  // Set default values
 		  compute.initGrid(sizeSOM_Ai[0][0],
 						   sizeSOM_Ai[0][1], d);
-		  nodes_lbl.disable();
-		  nodes_choice.disable();
+		  nodes_lbl.setEnabled(false);
+		  nodes_choice.setEnabled(false);
           compute.e_i = epsiloniSOM_Af[0];
 		  epsiloniSOM_choice.select(0);
-		  epsiloniSOM_choice.show();
+		  epsiloniSOM_choice.setVisible(true);
           compute.e_f = epsilonfSOM_Af[0];
 		  epsilonfSOM_choice.select(0);
-		  epsilonfSOM_choice.show();
+		  epsilonfSOM_choice.setVisible(true);
           compute.sigma_i = sigmaiSOM_Af[0];
 		  sigmaiSOM_choice.select(0);
-		  sigmaiSOM_choice.show();
+		  sigmaiSOM_choice.setVisible(true);
           compute.sigma_f = sigmafSOM_Af[0];
 		  sigmafSOM_choice.select(0);
-		  sigmafSOM_choice.show();
+		  sigmafSOM_choice.setVisible(true);
           compute.t_max = tmaxSOM_Af[0];
 		  tmaxSOM_choice.select(0);
-		  tmaxSOM_choice.show();
+		  tmaxSOM_choice.setVisible(true);
 		}
       } 
       // distribution
