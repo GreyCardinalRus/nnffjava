@@ -57,6 +57,10 @@ import java.util.*;
  */
 public class SelGraphics extends Canvas {
   /**
+	 * 
+	 */
+	private static final long serialVersionUID = -9033060694313835179L;
+/**
    * The initial maximum value for the x-axis.
    */
   final int INIT_MAX_X = 50;
@@ -79,10 +83,10 @@ public class SelGraphics extends Canvas {
     super();
 
 	// The initial size of the frame
-	resize(400,200);
+	setSize(400,200);
     data = new Vector(1,1);
     data.addElement( new Vector(100,20) );
-    show();
+    setVisible(true);
   }
   
   public void update(Graphics g) {
