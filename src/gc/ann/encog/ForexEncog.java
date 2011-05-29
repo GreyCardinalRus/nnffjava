@@ -4,7 +4,7 @@ package gc.ann.encog;
  * Encog(tm) Examples v3.0 - Java Version
  * http://www.heatonresearch.com/encog/
  * http://code.google.com/p/encog-java/
- 
+
  * Copyright 2008-2011 Heaton Research, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -24,11 +24,30 @@ package gc.ann.encog;
  * http://www.heatonresearch.com/copyright
  */
 
+//import java.io.File;
+
+import org.encog.ml.data.MLData;
+import org.encog.ml.data.MLDataPair;
 import org.encog.ml.data.MLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.util.csv.CSVFormat;
 import org.encog.util.simple.EncogUtility;
 import org.encog.util.simple.TrainingSetUtil;
+//import org.encog.neural.prune.PruneIncremental;
+//import org.encog.persist.EncogDirectoryPersistence;
+//import org.encog.persist.EncogPersistor;
+//import org.encog.persist.;
+
+import org.encog.engine.network.activation.ActivationTANH;
+import org.encog.neural.data.NeuralData;
+import org.encog.neural.data.NeuralDataPair;
+import org.encog.neural.data.NeuralDataSet;
+import org.encog.neural.data.basic.BasicNeuralDataSet;
+import org.encog.neural.networks.layers.BasicLayer;
+import org.encog.neural.networks.training.Train;
+import org.encog.neural.networks.training.genetic.NeuralGeneticAlgorithm;
+import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
+import org.encog.neural.networks.training.propagation.back.Backpropagation;
 
 /**
  * XOR: This example is essentially the "Hello World" of neural network
@@ -45,27 +64,52 @@ import org.encog.util.simple.TrainingSetUtil;
  * This example reads the XOR data from a CSV file. This file should be
  * something like:
  * 
- * 0,0,0 
- * 1,0,1 
- * 0,1,1 
- * 1,1,0
+ * 0,0,0 1,0,1 0,1,1 1,1,0
  */
 public class ForexEncog {
 
 	public static void main(final String args[]) {
+		// Prpototype_EURUSD_train_data.csv
+		final MLDataSet trainingSet = TrainingSetUtil.loadCSVTOMemory(CSVFormat.DECIMAL_POINT,
+		//		"j:\\data\\xor.csv", true, 2, 1);
+		"j:\\data\\Prpototype_EURUSD_train_data.csv", true, 14, 1);
+		// final BasicNetwork network = EncogUtility.simpleFeedForward(2, 4, 0,
+		// 1,
+		// true);
+		BasicNetwork network = new BasicNetwork();
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 14));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 16));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 8));
+		network.addLayer(new BasicLayer(new ActivationTANH(), true, 1));
 
-		final MLDataSet trainingSet = TrainingSetUtil.loadCSVTOMemory(
-				CSVFormat.ENGLISH, "j:\\data\\xor.csv", false, 2, 1);
-		final BasicNetwork network = EncogUtility.simpleFeedForward(2, 4, 0, 1,
-				true);
-
+		//network.setLogic(new FeedforwardLogic());
+		network.getStructure().finalizeStructure();
+		network.reset();
+		// EncogPersisted
 		System.out.println();
 		System.out.println("Training Network");
-		EncogUtility.trainToError(network, trainingSet, 0.001);
-
-		System.out.println();
-		System.out.println("Evaluating Network");
-		EncogUtility.evaluate(network, trainingSet);
+		// train the neural network
+		final Train train = new ResilientPropagation(network, trainingSet);
+//		final Train train = new Backpropagation(network, trainingSet);
+//		final NeuralGeneticAlgorithm train = new NeuralGeneticAlgorithm(network, trainingSet);
+		int epoch = 1;
+		do {
+			train.iteration();
+			System.out
+					.println("Epoch #" + epoch + " Error:" + train.getError()*100+"%");
+			epoch++;
+		} while (train.getError() > 0.01);
+		// test the neural network
+//		System.out.println("Neural Network Results:");
+//		for (MLDataPair pair : trainingSet) {
+//			final MLData output = network.compute(pair.getInput());
+//			System.out.println(pair.getInput().getData(0) + ","
+//					+ pair.getInput().getData(1) + ", actual="
+//					+ output.getData(0) + ",ideal="
+//					+ pair.getIdeal().getData(0));
+//		}
 	}
 }
-
