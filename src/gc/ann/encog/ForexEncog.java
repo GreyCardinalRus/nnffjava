@@ -26,12 +26,16 @@ package gc.ann.encog;
 
 //import java.io.File;
 
-import org.encog.ml.data.MLData;
-import org.encog.ml.data.MLDataPair;
+//import org.encog.ml.data.MLData;
+//import org.encog.ml.data.MLDataPair;
+import gc.ann.encog.market.Config;
+
+import java.io.File;
+
 import org.encog.ml.data.MLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.util.csv.CSVFormat;
-import org.encog.util.simple.EncogUtility;
+//import org.encog.util.simple.EncogUtility;
 import org.encog.util.simple.TrainingSetUtil;
 //import org.encog.neural.prune.PruneIncremental;
 //import org.encog.persist.EncogDirectoryPersistence;
@@ -39,15 +43,16 @@ import org.encog.util.simple.TrainingSetUtil;
 //import org.encog.persist.;
 
 import org.encog.engine.network.activation.ActivationTANH;
-import org.encog.neural.data.NeuralData;
-import org.encog.neural.data.NeuralDataPair;
-import org.encog.neural.data.NeuralDataSet;
-import org.encog.neural.data.basic.BasicNeuralDataSet;
+//import org.encog.neural.data.NeuralData;
+//import org.encog.neural.data.NeuralDataPair;
+//import org.encog.neural.data.NeuralDataSet;
+//import org.encog.neural.data.basic.BasicNeuralDataSet;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.Train;
-import org.encog.neural.networks.training.genetic.NeuralGeneticAlgorithm;
+//import org.encog.neural.networks.training.genetic.NeuralGeneticAlgorithm;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
-import org.encog.neural.networks.training.propagation.back.Backpropagation;
+//import org.encog.neural.networks.training.propagation.back.Backpropagation;
+import org.encog.persist.EncogDirectoryPersistence;
 
 /**
  * XOR: This example is essentially the "Hello World" of neural network
@@ -69,47 +74,56 @@ import org.encog.neural.networks.training.propagation.back.Backpropagation;
 public class ForexEncog {
 
 	public static void main(final String args[]) {
-		// Prpototype_EURUSD_train_data.csv
-		final MLDataSet trainingSet = TrainingSetUtil.loadCSVTOMemory(CSVFormat.DECIMAL_POINT,
-		//		"j:\\data\\xor.csv", true, 2, 1);
-		"j:\\data\\Prpototype_EURUSD_train_data.csv", true, 14, 1);
-		// final BasicNetwork network = EncogUtility.simpleFeedForward(2, 4, 0,
-		// 1,
-		// true);
-		BasicNetwork network = new BasicNetwork();
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 14));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 16));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 8));
-		network.addLayer(new BasicLayer(new ActivationTANH(), true, 1));
+		String dataDir = "c:\\Program Files\\MetaTrader 5\\MQL5\\Files\\";
+		final File networkFile = new File(dataDir, "Easy_EURUSD.eg");
+		BasicNetwork network;
+		try {
+			network = (BasicNetwork) EncogDirectoryPersistence
+					.loadObject(networkFile);
+		} catch (Exception e) {
+			// TODO: handle exception
 
-		//network.setLogic(new FeedforwardLogic());
-		network.getStructure().finalizeStructure();
-		network.reset();
-		// EncogPersisted
-		System.out.println();
-		System.out.println("Training Network");
-		// train the neural network
-		final Train train = new ResilientPropagation(network, trainingSet);
-//		final Train train = new Backpropagation(network, trainingSet);
-//		final NeuralGeneticAlgorithm train = new NeuralGeneticAlgorithm(network, trainingSet);
-		int epoch = 1;
-		do {
-			train.iteration();
-			System.out
-					.println("Epoch #" + epoch + " Error:" + train.getError()*100+"%");
-			epoch++;
-		} while (train.getError() > 0.01);
+			final MLDataSet trainingSet = TrainingSetUtil.loadCSVTOMemory(
+					CSVFormat.DECIMAL_POINT, dataDir
+							+ "Easy_EURUSD_train_data.csv", true, 16, 1);
+			network = new BasicNetwork();
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 16));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 28));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 16));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 8));
+			network.addLayer(new BasicLayer(new ActivationTANH(), true, 1));
+
+			// network.setLogic(new FeedforwardLogic());
+			network.getStructure().finalizeStructure();
+			network.reset();
+			// EncogPersisted
+			System.out.println();
+			System.out.println("Training Network");
+			// train the neural network
+			final Train train = new ResilientPropagation(network, trainingSet);
+			// final Train train = new Backpropagation(network, trainingSet);
+			// final NeuralGeneticAlgorithm train = new
+			// NeuralGeneticAlgorithm(network, trainingSet);
+			int epoch = 1;
+			do {
+				train.iteration();
+				System.out.println("Epoch #" + epoch + " Error:"
+						+ train.getError() * 100 + "%");
+				epoch++;
+			} while (train.getError() > 0.015);
+			EncogDirectoryPersistence.saveObject(networkFile, network);
+			System.out.println("Neural Network Saved:");
+		}
 		// test the neural network
-//		System.out.println("Neural Network Results:");
-//		for (MLDataPair pair : trainingSet) {
-//			final MLData output = network.compute(pair.getInput());
-//			System.out.println(pair.getInput().getData(0) + ","
-//					+ pair.getInput().getData(1) + ", actual="
-//					+ output.getData(0) + ",ideal="
-//					+ pair.getIdeal().getData(0));
-//		}
+		//System.out.println("Neural Network Results:");
+		// for (MLDataPair pair : trainingSet) {
+		// final MLData output = network.compute(pair.getInput());
+		// System.out.println(pair.getInput().getData(0) + ","
+		// + pair.getInput().getData(1) + ", actual="
+		// + output.getData(0) + ",ideal="
+		// + pair.getIdeal().getData(0));
+		// }
 	}
 }
