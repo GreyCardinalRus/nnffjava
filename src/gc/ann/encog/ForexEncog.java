@@ -28,10 +28,17 @@ package gc.ann.encog;
 
 //import org.encog.ml.data.MLData;
 //import org.encog.ml.data.MLDataPair;
+//import gc.ann.encog.market.Config;
+
 import gc.ann.encog.market.Config;
 
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
+import org.encog.ml.data.MLData;
+import org.encog.ml.data.MLDataPair;
 import org.encog.ml.data.MLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.util.csv.CSVFormat;
@@ -73,7 +80,7 @@ import org.encog.persist.EncogDirectoryPersistence;
  */
 public class ForexEncog {
 
-	public static void main(final String args[]) {
+	public static void main(final String args[]) throws InterruptedException {
 		String dataDir = "c:\\Program Files\\MetaTrader 5\\MQL5\\Files\\";
 		final File networkFile = new File(dataDir, "Easy_EURUSD.eg");
 		BasicNetwork network;
@@ -117,6 +124,40 @@ public class ForexEncog {
 			System.out.println("Neural Network Saved:");
 		}
 		// test the neural network
+		//File resultFile ;//= new File(dataDir, Config.NETWORK_FILE);
+		MLDataSet trainingSet;
+		while(true)
+		{
+			Thread.sleep(4000);
+		try
+		{
+			//resultFile = new File(dataDir, "Easy_EURUSD_result_data.csv");
+			//if (!resultFile.exists()) 
+			{
+			trainingSet = TrainingSetUtil.loadCSVTOMemory(
+				CSVFormat.DECIMAL_POINT, dataDir
+						+ "Easy_EURUSD_prediction_data.csv", true, 16, 1);
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dataDir+"\\Easy_EURUSD_result_data.csv",true)));
+
+            for (MLDataPair pair : trainingSet) 
+			 {
+			 final MLData output = network.compute(pair.getInput());
+			 System.out.println("actual="
+			 + output.getData(0) + ",ideal="
+			 + pair.getIdeal().getData(0));
+			 out.write(Double.toString(output.getData(0)));
+			 out.write("\n");
+			 }
+            trainingSet.close();
+            File f=new File(dataDir	+ "Easy_EURUSD_prediction_data.csv");
+            if(!f.delete()) System.out.print("Err delete");
+	        out.close();
+			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+		}
+		}
 		//System.out.println("Neural Network Results:");
 		// for (MLDataPair pair : trainingSet) {
 		// final MLData output = network.compute(pair.getInput());
