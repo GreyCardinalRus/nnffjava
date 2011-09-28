@@ -32,7 +32,9 @@ package gc.ann.encog;
 
 import gc.ann.encog.market.Config;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
@@ -125,8 +127,8 @@ public class ForexEncog {
 		}
 		// test the neural network
 		//File resultFile ;//= new File(dataDir, Config.NETWORK_FILE);
-		MLDataSet trainingSet;
-		while(true)
+		//MLDataSet trainingSet;
+		//while(true)
 		{
 			Thread.sleep(4000);
 		try
@@ -134,23 +136,40 @@ public class ForexEncog {
 			//resultFile = new File(dataDir, "Easy_EURUSD_result_data.csv");
 			//if (!resultFile.exists()) 
 			{
-			trainingSet = TrainingSetUtil.loadCSVTOMemory(
+				MLDataSet trainingSet = TrainingSetUtil.loadCSVTOMemory(
 				CSVFormat.DECIMAL_POINT, dataDir
 						+ "Easy_EURUSD_prediction_data.csv", true, 16, 1);
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dataDir+"\\Easy_EURUSD_result_data.csv",true)));
-
+            //OracleDummy_fc.mqh
+            //BufferedWriter fod = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(dataDir+"\\OracleDummy_fc.mqh",true)));
+            FileOutputStream fileOut = new FileOutputStream(dataDir+"\\OracleDummy_fc.mqh");
+            BufferedOutputStream buffer = new BufferedOutputStream(fileOut);
+            DataOutputStream fod = new DataOutputStream(buffer);
+            fod.writeBytes("double od_forecast(datetime time,string smb)  \r");
+            fod.writeBytes(" {\r");
             for (MLDataPair pair : trainingSet) 
 			 {
 			 final MLData output = network.compute(pair.getInput());
-			 System.out.println("actual="
-			 + output.getData(0) + ",ideal="
-			 + pair.getIdeal().getData(0));
-			 out.write(Double.toString(output.getData(0)));
-			 out.write("\n");
+			 if((-0.66>output.getData(0))||(0.66<output.getData(0)))
+				 {
+					 //(pair.getInput().getData(0)*3.5+1);//
+				 System.out.println("actual="
+				 + output.getData(0) + ",ideal="
+				 + pair.getIdeal().getData(0)+" "+(int)(0.5+(pair.getInput().getData(0)+1)*3.5)
+				 +" "+(int)(0.5+(pair.getInput().getData(1)+1)*12)
+				 +" "+(int)(0.5+(pair.getInput().getData(2)+1)*30));
+				 out.write(Double.toString(output.getData(0)));
+				 out.write("\n");                                      //"2011.09.28 18:14:00"
+				 fod.writeBytes("  if(smb==\"EURUSD\" && time==StringToTime(\"2011.09.28 "+(int)(0.5+(pair.getInput().getData(1)+1)*12)+":"+(int)(0.5+(pair.getInput().getData(2)+1)*30)+":00\")) return("+output.getData(0)+");\r");
+				 }
 			 }
+            
             trainingSet.close();
-            File f=new File(dataDir	+ "Easy_EURUSD_prediction_data.csv");
-            if(!f.delete()) System.out.print("Err delete");
+            fod.writeBytes("  return(0);\r");
+            fod.writeBytes(" }\r");
+            fod.close();
+            //File f=new File(dataDir	+ "Easy_EURUSD_prediction_data.csv");
+            //if(!f.delete()) System.out.print("Err delete \n");
 	        out.close();
 			}
 		}
