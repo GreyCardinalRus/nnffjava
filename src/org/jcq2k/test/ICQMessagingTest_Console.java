@@ -1,11 +1,6 @@
 package org.jcq2k.test;
 
-//import java.applet.*;
 import java.util.*;
-//import java.io.*;
-//import java.awt.*;
-//import java.awt.event.*;
-//import org.jcq2k.util.joe.*;
 import org.jcq2k.*;
 import org.jcq2k.util.joe.StringUtil;
 
@@ -25,13 +20,13 @@ public class ICQMessagingTest_Console {
 	String password;
 	{
 		try {
-			String className = cfg.REQPARAM_MESSAGING_NETWORK_IMPL_CLASS_NAME
+			String className = ICQMessagingTest.REQPARAM_MESSAGING_NETWORK_IMPL_CLASS_NAME
 					.trim();
 			CAT.info("Instantiating class \"" + className + "\"...");
 			plugin = (MessagingNetwork) Class.forName(className).newInstance();
 			plugin.init();
-			loginId = "" + cfg.REQPARAM_SRC_LOGIN_ID;
-			password = cfg.REQPARAM_SRC_PASSWORD;
+			loginId = "" + ICQMessagingTest.REQPARAM_SRC_LOGIN_ID;
+			password = ICQMessagingTest.REQPARAM_SRC_PASSWORD;
 		} catch (Throwable tr) {
 			CAT.error("exception", tr);
 			System.exit(1);
@@ -41,7 +36,7 @@ public class ICQMessagingTest_Console {
 	{
 		StringBuffer sb = new StringBuffer();
 		StringTokenizer st = new StringTokenizer(
-				cfg.REQPARAM_CONTACT_LIST_LOGIN_IDS, ",");
+				ICQMessagingTest.REQPARAM_CONTACT_LIST_LOGIN_IDS, ",");
 		while (st.hasMoreTokens()) {
 			sb.append(st.nextToken());
 			if (st.hasMoreTokens())
@@ -138,16 +133,16 @@ public class ICQMessagingTest_Console {
 				public void statusChanged(byte networkId, String srcLoginId,
 						String dstLoginId, int status, int reasonCategory,
 						String reasonMessage) {
-					String status_s = "invalid: " + status + " (BUGGG!)";
+					//String status_s = "invalid: " + status + " (BUGGG!)";
 					switch (status) {
 					case MessagingNetwork.STATUS_OFFLINE:
-						status_s = "offline";
+						//status_s = "offline";
 						break;
 					case MessagingNetwork.STATUS_ONLINE:
-						status_s = "online";
+						//status_s = "online";
 						break;
 					case MessagingNetwork.STATUS_BUSY:
-						status_s = "busy";
+						//status_s = "busy";
 						break;
 					}
 					// if (srcLoginId.equals(dstLoginId))
