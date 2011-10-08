@@ -30,7 +30,7 @@ package gc.ann.encog;
 //import org.encog.ml.data.MLDataPair;
 //import gc.ann.encog.market.Config;
 
-import gc.ann.encog.market.Config;
+//import gc.ann.encog.market.Config;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -38,48 +38,21 @@ import java.io.DataOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.OutputStreamWriter;
+import java.util.StringTokenizer;
 
 import org.encog.ml.data.MLData;
 import org.encog.ml.data.MLDataPair;
 import org.encog.ml.data.MLDataSet;
 import org.encog.neural.networks.BasicNetwork;
 import org.encog.util.csv.CSVFormat;
-//import org.encog.util.simple.EncogUtility;
 import org.encog.util.simple.TrainingSetUtil;
-//import org.encog.neural.prune.PruneIncremental;
-//import org.encog.persist.EncogDirectoryPersistence;
-//import org.encog.persist.EncogPersistor;
-//import org.encog.persist.;
 
 import org.encog.engine.network.activation.ActivationTANH;
-//import org.encog.neural.data.NeuralData;
-//import org.encog.neural.data.NeuralDataPair;
-//import org.encog.neural.data.NeuralDataSet;
-//import org.encog.neural.data.basic.BasicNeuralDataSet;
 import org.encog.neural.networks.layers.BasicLayer;
 import org.encog.neural.networks.training.Train;
-//import org.encog.neural.networks.training.genetic.NeuralGeneticAlgorithm;
 import org.encog.neural.networks.training.propagation.resilient.ResilientPropagation;
-//import org.encog.neural.networks.training.propagation.back.Backpropagation;
 import org.encog.persist.EncogDirectoryPersistence;
 
-/**
- * XOR: This example is essentially the "Hello World" of neural network
- * programming. This example shows how to construct an Encog neural network to
- * predict the output from the XOR operator. This example uses resilient
- * propagation (RPROP) to train the neural network. RPROP is the best general
- * purpose supervised training method provided by Encog.
- * 
- * For the XOR example with RPROP I use 4 hidden neurons. XOR can get by on just
- * 2, but often the random numbers generated for the weights are not enough for
- * RPROP to actually find a solution. RPROP can have issues on really small
- * neural networks, but 4 neurons seems to work just fine.
- * 
- * This example reads the XOR data from a CSV file. This file should be
- * something like:
- * 
- * 0,0,0 1,0,1 0,1,1 1,1,0
- */
 public class ForexEncog {
 
 	public static void main(final String args[]) throws InterruptedException {
