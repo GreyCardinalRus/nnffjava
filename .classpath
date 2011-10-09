@@ -4,5 +4,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="jar/encog-core-3.0.1-SNAPSHOT.jar"/>
 	<classpathentry kind="lib" path="jar/log4j.jar"/>
+	<classpathentry kind="lib" path="jar/derby.jar"/>
+	<classpathentry kind="lib" path="jar/derbyclient.jar"/>
+	<classpathentry kind="lib" path="jar/derbyLocale_ru.jar"/>
+	<classpathentry kind="con" path="DERBY_CONTAINER"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

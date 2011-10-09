@@ -27,9 +27,9 @@ public class ForexEncogServer {
 	public static double IDEAL[][] = { { 0.0 } };
 	public static double INPUT[][] = { { 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
 			0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0 } };;
-	public static String smbl = "",tf="",DoIt = "";
+	public static String smbl = "", tf = "", DoIt = "";
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {// throws IOException {
 		System.out.println("Welcome to Server side");
 		BufferedReader in = null;
 		PrintWriter out = null;
@@ -54,69 +54,82 @@ public class ForexEncogServer {
 			System.exit(-1);
 		}
 
-		in = new BufferedReader(new InputStreamReader(
-				fromclient.getInputStream()));
-		out = new PrintWriter(fromclient.getOutputStream(), true);
-		String input, output;
-
-		System.out.println("Wait for messages");
-		while ((input = in.readLine()) != null) {
-			if (input.equalsIgnoreCase("!Exit"))
-				break;
-			if (input.startsWith("ENCOG,")) {
-				// format ENCOG,PAIR,TF,DATA1,DATA2,...
-				String[] result = input.split(",");
-				if(result.length<3)
-				{
-					out.println("Error format " );
-					continue;
-				}
-				smbl = result[1]; tf=result[2];
-				String dataDir = "c:\\Program Files\\MetaTrader 5\\MQL5\\Files\\";
-				final File networkFile = new File(dataDir, "Easy_"+smbl+"_"+tf+".eg");
-				try {
-					network = (BasicNetwork) EncogDirectoryPersistence
-							.loadObject(networkFile);
-					} 
-				catch (Exception e) 
-					{
-						out.println("Network "+dataDir+ "\\Easy_"+smbl+"_"+tf+".eg"+" open failed " );
-					 continue;
-					}
-				if(network.getInputCount()!=(result.length-3))
-				{ 
-					out.println("Size input ("+(result.length-3)+") != network input size ("+network.getInputCount() +")");
-					continue;
-				}
-				for (int x = 2; x < result.length; x++)
-					INPUT[0][x - 1] = Double.valueOf(result[x]);
-				BasicMLDataSet inputSet = new BasicMLDataSet(INPUT,
-						IDEAL);
-				for (MLDataPair pair : inputSet) {
-					final MLData outputEnvog = network.compute(pair
-							.getInput());
-					DoIt = "None";
-					if (-0.66 > outputEnvog.getData(0))
-						DoIt = "!Sell " + smbl;
-					else if (-0.33 > outputEnvog.getData(0))
-						DoIt = "!CloseBuy " + smbl;
-					else if (0.33 > outputEnvog.getData(0))
-						DoIt = "None " + smbl;
-					else if (0.66 < outputEnvog.getData(0))
-						DoIt = "!Buy " + smbl;
-					else if (0.33 < outputEnvog.getData(0))
-						DoIt = "CloseSell " + smbl;
-					out.println(DoIt);
-				}
-				//delete(network);
-			} else
-				out.println("S ::: " + input);
-			System.out.println(input);
+		String input="", output = "";
+		try {
+			in = new BufferedReader(new InputStreamReader(
+					fromclient.getInputStream()));
+			out = new PrintWriter(fromclient.getOutputStream(), true);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-		System.out.println("Server shutdown...");
-		out.close();
-		in.close();
-		fromclient.close();
-		servers.close();
+		System.out.println("Wait for messages");
+		try {
+			while (1==1)
+			{
+				if ("" != output) {
+					System.out.println(output);
+					out.println(output);
+					output = "";
+				}
+				if((input = in.readLine())==null) continue;
+				if (input.equalsIgnoreCase("!Exit"))
+					break;
+				if (input.startsWith("ENCOG,")) {
+					// format ENCOG,PAIR,TF,DATA1,DATA2,...
+					String[] result = input.split(",");
+					if (result.length < 3) {
+						output = "Error format ";
+						continue;
+					}
+					smbl = result[1];
+					tf = result[2];
+					String dataDir = "c:\\Program Files\\MetaTrader 5\\MQL5\\Files\\";
+					final File networkFile = new File(dataDir, "Easy_" + smbl
+							+ "_" + tf + ".eg");
+					try {
+						network = (BasicNetwork) EncogDirectoryPersistence
+								.loadObject(networkFile);
+					} catch (Exception e) {
+						output = "Network " + dataDir + "\\Easy_" + smbl + "_"
+								+ tf + ".eg" + " open failed ";
+						continue;
+					}
+					if (network.getInputCount() != (result.length - 3)) {
+						output = "Size input (" + (result.length - 3)
+								+ ") != network input size ("
+								+ network.getInputCount() + ")";
+						continue;
+					}
+					for (int x = 2; x < result.length; x++)
+						INPUT[0][x - 1] = Double.valueOf(result[x]);
+					BasicMLDataSet inputSet = new BasicMLDataSet(INPUT, IDEAL);
+					for (MLDataPair pair : inputSet) {
+						final MLData outputEnvog = network.compute(pair
+								.getInput());
+						DoIt = "None";
+						if (-0.66 > outputEnvog.getData(0))
+							DoIt = "!Sell " + smbl;
+						else if (-0.33 > outputEnvog.getData(0))
+							DoIt = "!CloseBuy " + smbl;
+						else if (0.33 > outputEnvog.getData(0))
+							DoIt = "None " + smbl;
+						else if (0.66 < outputEnvog.getData(0))
+							DoIt = "!Buy " + smbl;
+						else if (0.33 < outputEnvog.getData(0))
+							DoIt = "CloseSell " + smbl;
+						output = DoIt;
+					}
+					// delete(network);
+				} else
+					output = "S ::: " + input;
+			}
+			System.out.println("Server shutdown...");
+			out.close();
+			in.close();
+			fromclient.close();
+			servers.close();
+		} catch (Exception e) {
+			System.out.println("Connection close");// TODO: handle exception
+		}
 	}
 }
