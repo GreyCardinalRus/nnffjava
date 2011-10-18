@@ -197,6 +197,7 @@ public class TestDerby {
 			s = conn.createStatement();
 			statements.add(s);
 
+			//s.execute("drop table location");
 			// We create a table...
 			s.execute("create table location(num int, addr varchar(40))");
 			System.out.println("Created table location");

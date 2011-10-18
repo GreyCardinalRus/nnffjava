@@ -185,17 +185,17 @@ public class ForexEncogICQ {
 							DoIt = "None";
 							if (-0.66 > output.getData(0))
 								DoIt = "!Sell " + result[0];
-							else if (-0.33 > output.getData(0))
+							else if (-0.5 > output.getData(0))
 								DoIt = "!CloseBuy " + result[0];
-							else if (0.33 > output.getData(0))
+							else if (0.5 > output.getData(0))
 								DoIt = "None " + result[0];
 							else if (0.66 < output.getData(0))
-								DoIt = "Buy " + result[0];
-							else if (0.33 < output.getData(0))
-								DoIt = "CloseSell " + result[0];
+								DoIt = "!Buy " + result[0];
+							else if (0.5 < output.getData(0))
+								DoIt = "!CloseSell " + result[0];
 							{
 								try {
-									if(!DoIt.startsWith( "None"))
+									//if(!DoIt.startsWith( "None"))
 									plugin.sendMessage(getMyLoginId(), from,
 											DoIt + "  " + output.getData(0));
 								} catch (Throwable tr) {
